@@ -61,6 +61,46 @@ app.post("/desenvolvedores", async(req, res) => {
     }
 })
 
+app.put("/desenvolvedores/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+        const { nome, nivel, equipeId } = req.body
+        const devAtt = await prisma.desenvolvedor.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                nome,
+                nivel,
+                equipeId
+            }
+        })
+        return res.json(devAtt)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao atualizar desenvolvedor."})
+    }
+})
+
+app.put("/equipes/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+        const { nome, especialidade } = req.body
+        const devAtt = await prisma.equipe.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                nome,
+                especialidade
+            }
+        })
+        return res.json(devAtt)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao atualizar equipe."})
+    }
+})
+
+
 app.listen(PORT, () => {
     console.log("api rodando")
 })
