@@ -10,9 +10,9 @@ app.use(cors())
 app.get("/equipes", async (req, res) => {
     try {
         const equipes = await prisma.equipe.findMany()
-        return res.json(equipes)
+        return res.status(200).json(equipes)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao buscar alunos."})
+        res.status(404).json({error: "ERRO ao buscar equipes."})
     }
 })
 
@@ -24,9 +24,9 @@ app.get("/equipes/:id/desenvolvedores", async (req, res) => {
                 equipeId: Number(id)
             }
         })
-        return res.json(desenvolvedores)
+        return res.status(200).json(desenvolvedores)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao buscar desenvolvedores."})
+        res.status(404).json({error: "ERRO ao buscar desenvolvedores."})
     }
 })
 
@@ -41,7 +41,7 @@ app.post("/equipes", async(req, res) => {
         })
         return res.status(201).json(novaEquipe)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao buscar desenvolvedores."})
+        res.status(501).json({error: "ERRO ao criar equipes."})
     }
 })
 
@@ -57,7 +57,7 @@ app.post("/desenvolvedores", async(req, res) => {
         })
         return res.status(201).json(novoDev)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao buscar desenvolvedores."})
+        res.status(501).json({error: "ERRO ao criar desenvolvedores."})
     }
 })
 
@@ -75,9 +75,9 @@ app.put("/desenvolvedores/:id", async(req, res) => {
                 equipeId
             }
         })
-        return res.json(devAtt)
+        return res.status(200).json(devAtt)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao atualizar desenvolvedor."})
+        res.status(501).json({error: "ERRO ao atualizar desenvolvedor."})
     }
 })
 
@@ -94,12 +94,39 @@ app.put("/equipes/:id", async(req, res) => {
                 especialidade
             }
         })
-        return res.json(devAtt)
+        return res.status(200).json(devAtt)
     } catch(error) {
-        res.status(500).json({error: "ERRO ao atualizar equipe."})
+        res.status(501).json({error: "ERRO ao atualizar equipe."})
     }
 })
 
+app.delete("/equipes/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+        const deletarEquipe = await prisma.equipe.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+        return res.status(200).json(deletarEquipe)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao deletar equipe."})
+    }
+})
+
+app.delete("/desenvolvedores/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+        const deletarDev = await prisma.desenvolvedor.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+        return res.status(200).json(deletarDev)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao deletar desenvolvedor."})
+    }
+})
 
 app.listen(PORT, () => {
     console.log("api rodando")
