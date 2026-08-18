@@ -16,4 +16,4 @@ b) As requisições válidas são:
 - PUT equipes/:id  
 - DELETE desenvolvedores/:id  
 - DELETE equipes/:id  
-c) O servidor, por padrão, roda na porta 3000. Portanto, utilize a url "http://localhost/3000/" para as requisições.
+c) O servidor, por padrão, roda na porta 3000. Portanto, utilize a url "http://localhost:3000/" para as requisições.
