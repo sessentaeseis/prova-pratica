@@ -30,6 +30,36 @@ app.get("/equipes/:id/desenvolvedores", async (req, res) => {
     }
 })
 
+app.post("/equipes", async(req, res) => {
+    try {
+        const { nome, especialidade } = req.body
+        const novaEquipe = await prisma.equipe.create({
+            data: {
+                nome,
+                especialidade
+            }
+        })
+        return res.status(201).json(novaEquipe)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao buscar desenvolvedores."})
+    }
+})
+
+app.post("/desenvolvedores", async(req, res) => {
+    try {
+        const { nome, nivel, equipeId } = req.body 
+        const novoDev = await prisma.desenvolvedor.create({
+            data: {
+                nome,
+                nivel,
+                equipeId
+            }
+        })
+        return res.status(201).json(novoDev)
+    } catch(error) {
+        res.status(500).json({error: "ERRO ao buscar desenvolvedores."})
+    }
+})
 
 app.listen(PORT, () => {
     console.log("api rodando")
